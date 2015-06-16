@@ -36,15 +36,34 @@ class StudentLocation: NSObject {
         //updatedAt = dictionary[StudentLocationClient.JSONKeys.UpdatedAt] as! NSDate
     }
     
-    /* Helper: Given an array of dictionaries, convert them to an array of TMDBMovie objects */
+    init(mapString:String){
+        self.mapString = mapString
+    }
+    
+    
+    
+    func getJSONBody() -> NSDictionary {
+        var result = [
+            StudentLocationClient.JSONKeys.UniqueKey:uniqueKey,
+            StudentLocationClient.JSONKeys.FirstName:firstName,
+            StudentLocationClient.JSONKeys.LastName:lastName,
+            StudentLocationClient.JSONKeys.MapString:mapString,
+            StudentLocationClient.JSONKeys.MediaURL:mediaURL,
+            StudentLocationClient.JSONKeys.Latitude:latitude,
+            StudentLocationClient.JSONKeys.Longitude:longitude
+        ]
+        return result
+    }
+    
+    /* Helper: Given an array of dictionaries, convert them to an array of StudentLocation objects */
     static func studentLocationsFromResults(results: [[String : AnyObject]]) -> [StudentLocation] {
-        var movies = [StudentLocation]()
+        var locations = [StudentLocation]()
         
         for result in results {
-            movies.append(StudentLocation(dictionary: result))
+            locations.append(StudentLocation(dictionary: result))
         }
         
-        return movies
+        return locations
     }
 
 }

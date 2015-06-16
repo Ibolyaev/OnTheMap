@@ -19,30 +19,36 @@ class LoginViewController: UIViewController {
     
     @IBAction func login(sender: UIButton) {
         
-        UdacityClient.sharedInstance().authenticateWithUdacityApi("ibolyaev@gmail.com", password: "Roodler2013") { (success, errorString) -> Void in
+        UdacityClient.sharedInstance().authenticateWithUdacityApi("ibolyaev@gmail.com", password: "Roodler2013") { (success,uniqueKey, errorString) -> Void in
             
             if success {
-                self.completeLogin()
+                
+                UdacityClient.sharedInstance().getUserInformation(uniqueKey, completionHandler: { (result, errorString) -> Void in
+                    
+                    if let userInformation = result  {
+                        self.completeLogin(userInformation)
+                    }else{
+                        println(errorString)
+                    }
+                    
+                })
+                
+                
+                
             } else {
                 self.displayError(errorString)
             }
 
             
         }
-        
-        /*UdacityClient.sharedInstance().authenticateWithUdacityApi(emailTextField.text,password: passwordTextField.text, {(success, errorString) in
-            if success {
-                self.completeLogin()
-            } else {
-                self.displayError(errorString)
-            }*/
-
+   
     }
     
-    func completeLogin() {
+    func completeLogin(user:UdacityUserInformation) {
         dispatch_async(dispatch_get_main_queue(), {
             self.debugTextLabel.text = ""
-            let controller = self.storyboard!.instantiateViewControllerWithIdentifier("TabBarController") as! UITabBarController
+            var controller = self.storyboard!.instantiateViewControllerWithIdentifier("TabBarController") as! OnTheMapTabBarController
+            controller.user = user
             self.presentViewController(controller, animated: true, completion: nil)
         })
     }

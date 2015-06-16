@@ -36,6 +36,28 @@ extension StudentLocationClient {
         }
     }
 
-    
+    func putStudentLocation(newStudentLocation: StudentLocation, completionHandler:( result:Bool, error: NSError?) -> Void) {
+        
+        var mutableMethod : String = Methods.StudentLocation
+        
+        
+        println(newStudentLocation.getJSONBody())
+        
+        taskForPostMethod(mutableMethod, jsonBody: newStudentLocation.getJSONBody() as! [String : AnyObject]) { (JSONResult, error) -> Void in
+            
+            if let error = error {
+                completionHandler(result: false, error: error)
+            } else {
+                
+                if let result = JSONResult.valueForKey(JSONKeys.ObjectId) as? String {
+                    completionHandler(result: true, error: nil)
+                }
+                
+            }
+            
+            
+        }
+        
+    }
     
 }

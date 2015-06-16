@@ -3,12 +3,65 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "On_the_map.StudentLocationClient.putStudentLocation (On_the_map.StudentLocationClient)(On_the_map.StudentLocation, completionHandler : (result : Swift.Bool, error : Swift.Optional&lt;ObjectiveC.NSError&gt;) -&gt; ()) -&gt; ():StudentLocationConvenience.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "newStudentLocation.getJSONBody()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "On_the_map.MapViewController.viewWillAppear (On_the_map.MapViewController)(Swift.Bool) -&gt; ():MapViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.navigationItem.rightBarButtonItem">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "On_the_map.UdacityClient.(getUserInformation (On_the_map.UdacityClient) -&gt; (Swift.Int, completionHandler : (result : Swift.Optional&lt;On_the_map.UdacityUserInformation&gt;, errorString : Swift.Optional&lt;Swift.String&gt;) -&gt; ()) -&gt; ()).(closure #1):UdacityClient.swift">
+      </ContextState>
+      <ContextState
+         contextName = "On_the_map.UdacityClient.(authenticateWithUdacityApi (On_the_map.UdacityClient) -&gt; (Swift.String, password : Swift.String, completionHandler : (success : Swift.Bool, uniqueKey : ObjectiveC.NSNumber, errorString : Swift.Optional&lt;Swift.String&gt;) -&gt; ()) -&gt; ()).(closure #1):UdacityClient.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "accountInfo.valueForKey(JSONResponseKeys.Registered) as! Bool">
+            </PersistentString>
+            <PersistentString
+               value = "accountInfo.valueForKey(JSONResponseKeys.Key)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "On_the_map.UdacityClient.(taskForPostMethod (On_the_map.UdacityClient) -&gt; (Swift.String, parameters : Swift.Dictionary&lt;Swift.String, Swift.AnyObject&gt;, jsonBody : Swift.Dictionary&lt;Swift.String, Swift.AnyObject&gt;, completionHandler : (result : Swift.ImplicitlyUnwrappedOptional&lt;Swift.AnyObject&gt;, error : Swift.Optional&lt;ObjectiveC.NSError&gt;) -&gt; ()) -&gt; ObjectiveC.NSURLSessionDataTask).(closure #1):UdacityClient.swift">
          <PersistentStrings>
             <PersistentString
                value = "data.subdataWithRange(NSMakeRange(5, data.length - 5))">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "On_the_map.MapViewController.addLocation (On_the_map.MapViewController)(ObjectiveC.UIBarButtonItem) -&gt; ():MapViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "On_the_map.UdacityUserInformation.init (On_the_map.UdacityUserInformation.Type)(dictionary : Swift.Dictionary&lt;Swift.String, Swift.AnyObject&gt;, uniqueKey : Swift.Int) -&gt; On_the_map.UdacityUserInformation:UdacityUserInformation.swift">
+      </ContextState>
+      <ContextState
+         contextName = "On_the_map.InformationPostViewController.submitTouchUpInside (On_the_map.InformationPostViewController)(ObjectiveC.UIButton) -&gt; ():InformationPostViewController.swift">
+      </ContextState>
+      <ContextState
+         contextName = "On_the_map.StudentLocationClient.taskForPostMethod (On_the_map.StudentLocationClient)(Swift.String, jsonBody : Swift.Dictionary&lt;Swift.String, Swift.AnyObject&gt;, completionHandler : (result : Swift.ImplicitlyUnwrappedOptional&lt;Swift.AnyObject&gt;, error : Swift.Optional&lt;ObjectiveC.NSError&gt;) -&gt; ()) -&gt; ObjectiveC.NSURLSessionDataTask:StudentLocationClient.swift">
+      </ContextState>
+      <ContextState
+         contextName = "On_the_map.ListViewController.viewWillAppear (On_the_map.ListViewController)(Swift.Bool) -&gt; ():ListViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.navigationController?.navigationBar.topItem?.rightBarButtonItem?">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "On_the_map.LoginViewController.(login (On_the_map.LoginViewController) -&gt; (ObjectiveC.UIButton) -&gt; ()).(closure #1).(closure #1):LoginViewController.swift">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

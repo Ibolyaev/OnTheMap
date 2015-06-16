@@ -10,18 +10,50 @@ import Foundation
 import UIKit
 import MapKit
 
-class MapViewController: UIViewController,MKMapViewDelegate  {
+class MapViewController: UIViewController, MKMapViewDelegate  {
     
     var studentLocations: [StudentLocation] = [StudentLocation]()
     
+    
+    
+    @IBOutlet weak var refreshButton: UIBarButtonItem!
     @IBOutlet weak var mapView: MKMapView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        refreshButton.target = self
+        refreshButton.action = "refresh:"
+        
+        let addButton = UIBarButtonItem(image: UIImage(named: "pin"), style: UIBarButtonItemStyle.Plain, target: self, action: "addLocation:")
+        
+        self.navigationItem.rightBarButtonItems?.append(addButton)
+        
+        loadLocations()
+   
     }
     
     override func viewWillAppear(animated: Bool) {
         
         super.viewWillAppear(animated)
+      
+    }
+    
+    func refresh(sender: UIBarButtonItem) {
+        loadLocations()
+    }
+    
+    func addLocation(sender: UIBarButtonItem){
+        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("InformationPostViewController") as! InformationPostViewController
+        let tabBarcontroller = self.tabBarController as! OnTheMapTabBarController
+        
+        controller.user = tabBarcontroller.user    
+        
+        
+        self.presentViewController(controller, animated: true, completion: nil)
+    }
+    
+    func loadLocations() {
         
         StudentLocationClient.sharedInstance().getStudentLocations { (result, error) -> Void in
             
@@ -38,6 +70,7 @@ class MapViewController: UIViewController,MKMapViewDelegate  {
             }
             
         }
+ 
     }
     
     // When user taps on the disclosure button perform a segue to Safari app
@@ -79,6 +112,7 @@ class MapViewController: UIViewController,MKMapViewDelegate  {
 
     func updateMapView() {
         
+        mapView.removeAnnotations(mapView.annotations)
         
         for el in self.studentLocations {
             addNewLocationOnMap(el)

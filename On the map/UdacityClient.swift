@@ -51,7 +51,63 @@ class UdacityClient: NSObject {
         return task
     }
     
-    func authenticateWithUdacityApi(login: String,password: String, completionHandler: (success: Bool, errorString: String?) -> Void) {
+    func taskForGetMethod(method: String, completionHandler: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
+        
+        //Build the URL and configure the request */
+        
+        let urlString = Constants.BaseURLSecure + method
+        let url = NSURL(string: urlString)!
+        let request = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = "GET"
+        
+        /* Make the request */
+        let task = session.dataTaskWithRequest(request) {data, response, downloadError in
+            
+            /* Parse the data and use the data (happens in completion handler) */
+            if let error = downloadError {
+                let newError = UdacityClient.errorForData(data, response: response, error: error)
+                completionHandler(result: nil, error: downloadError)
+            } else {
+                //
+                let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5)) /* subset response data! */
+                
+                UdacityClient.parseJSONWithCompletionHandler(newData, completionHandler: completionHandler)
+            }
+        }
+        
+        /* Start the request */
+        task.resume()
+        
+        return task
+    }
+
+    func getUserInformation (uniqueKey: Int, completionHandler:(result: UdacityUserInformation?,errorString:String?) -> Void) {
+        
+        var method = Methods.Users
+        
+        method = "\(method)/\(uniqueKey)"
+        
+        taskForGetMethod(method, completionHandler: { (result, error) -> Void in
+            
+            if let error = error {
+                
+                completionHandler(result: nil, errorString: "Error during get user info")
+            }else {
+                
+                if let paresedResult = result as? NSDictionary {
+                    
+                    let userInfo = paresedResult.valueForKey(JSONResponseKeys.User) as? NSDictionary
+                    
+                   completionHandler(result: UdacityUserInformation(dictionary: userInfo as! [String : AnyObject],uniqueKey: uniqueKey), errorString: "")
+                    
+                }
+            }
+        })
+        
+    }
+    
+    
+    func authenticateWithUdacityApi(login: String,password: String, completionHandler: (success: Bool, uniqueKey: Int, errorString: String?) -> Void) {
         
         let jsonBody = [JSONBodyKeys.Udacity:
             [JSONBodyKeys.Username:login,
@@ -62,17 +118,21 @@ class UdacityClient: NSObject {
             if let paresedResult = result as? NSDictionary {
                 
                 if let someError = error {
-                    completionHandler(success: false, errorString:"Error during authentication")
+                    completionHandler(success: false, uniqueKey: 0, errorString:"Error during authentication")
                 }else{
                     
                     if paresedResult.valueForKey(JSONResponseKeys.Error) != nil {
-                        completionHandler(success: false, errorString: paresedResult.valueForKey(JSONResponseKeys.Error) as? String)
+                        completionHandler(success: false,uniqueKey: 0, errorString: paresedResult.valueForKey(JSONResponseKeys.Error) as? String)
                     } else {
                         
                         //success
                         if let accountInfo = paresedResult.valueForKey(JSONResponseKeys.Account) as? NSDictionary {
                             
-                            completionHandler(success: accountInfo.valueForKey(JSONResponseKeys.Registered) as! Bool, errorString: "")
+                            let key = accountInfo.valueForKey(JSONResponseKeys.Key) as! String
+                            
+                            
+                            
+                            completionHandler(success: accountInfo.valueForKey(JSONResponseKeys.Registered) as! Bool,uniqueKey: key.toInt()!, errorString: "")
                             
                         }
                         
