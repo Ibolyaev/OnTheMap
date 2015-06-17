@@ -20,7 +20,7 @@ class StudentLocation: NSObject {
     var longitude :NSNumber = 0
     var createdAt :NSDate = NSDate()
     var updatedAt :NSDate = NSDate()
-    //var ACL
+    
     
     init(dictionary: [String : AnyObject]) {
         
@@ -32,8 +32,7 @@ class StudentLocation: NSObject {
         mediaURL  = dictionary[StudentLocationClient.JSONKeys.MediaURL] as! String
         latitude  = dictionary[StudentLocationClient.JSONKeys.Latitude] as! NSNumber
         longitude = dictionary[StudentLocationClient.JSONKeys.Longitude] as! NSNumber
-        //createdAt = dictionary[StudentLocationClient.JSONKeys.CreatedAt] as! NSDate
-        //updatedAt = dictionary[StudentLocationClient.JSONKeys.UpdatedAt] as! NSDate
+        
     }
     
     init(mapString:String){

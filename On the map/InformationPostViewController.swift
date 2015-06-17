@@ -29,11 +29,12 @@ class InformationPostViewController:UIViewController,MKMapViewDelegate {
         
         super.viewDidLoad()
         answerTextView.becomeFirstResponder()
-
+        
     }
     
+        
     @IBAction func findOnTheMapTouchUpInside(sender: UIButton) {
-         
+        
         var geocoder = CLGeocoder()
         var success = true
         geocoder.geocodeAddressString(answerTextView.text, completionHandler: {(placemarks: [AnyObject]!, error: NSError!) -> Void in
@@ -65,7 +66,7 @@ class InformationPostViewController:UIViewController,MKMapViewDelegate {
         if success {
             
             
-             mapView.hidden = false
+            mapView.hidden = false
             submitButton.hidden = false
             
             questionTextView.becomeFirstResponder()
@@ -91,7 +92,7 @@ class InformationPostViewController:UIViewController,MKMapViewDelegate {
             newStudentLocation!.firstName = user.firstName
             newStudentLocation!.lastName  = user.lastName
             newStudentLocation!.uniqueKey = "\(user.uniqueKey)"
-            newStudentLocation?.mediaURL = questionTextView.text
+            newStudentLocation!.mediaURL = questionTextView.text
             
             StudentLocationClient.sharedInstance().putStudentLocation(newStudentLocation!) { (result, error) -> Void in
                 
@@ -114,6 +115,14 @@ class InformationPostViewController:UIViewController,MKMapViewDelegate {
         }
         
         
+    }
+    //Regular expression used for validating submitted URLs.
+    func validateUrl(url: String) -> Bool {
+        let pattern = "^(https?:\\/\\/)([a-zA-Z0-9_\\-~]+\\.)+[a-zA-Z0-9_\\-~\\/\\.]+$"
+        if let match = url.rangeOfString(pattern, options: .RegularExpressionSearch){
+            return true
+        }
+        return false
     }
     
 }

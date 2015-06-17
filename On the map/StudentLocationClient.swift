@@ -21,7 +21,7 @@ class StudentLocationClient: NSObject {
     
     
     func taskForPostMethod(method: String,  jsonBody: [String:AnyObject], completionHandler: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
-          
+        
         //Build the URL and configure the request */
         
         let urlString = Constants.BaseURLSecure + method

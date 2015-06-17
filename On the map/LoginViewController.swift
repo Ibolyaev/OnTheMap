@@ -15,20 +15,30 @@ class LoginViewController: UIViewController {
     
     @IBOutlet weak var passwordTextField: UITextField!
     
-    @IBOutlet weak var debugTextLabel: UILabel!
+    
     
     @IBAction func login(sender: UIButton) {
         
-        UdacityClient.sharedInstance().authenticateWithUdacityApi("ibolyaev@gmail.com", password: "Roodler2013") { (success,uniqueKey, errorString) -> Void in
+        loginWithUdacityClient()
+        
+    }
+    
+    func loginWithUdacityClient() {
+        
+        UdacityClient.sharedInstance().authenticateWithUdacityApi("ibolyaev@gmail.com", password: "Roodler2013") { (success,uniqueKey, error) -> Void in
             
             if success {
                 
-                UdacityClient.sharedInstance().getUserInformation(uniqueKey, completionHandler: { (result, errorString) -> Void in
+                UdacityClient.sharedInstance().getUserInformation(uniqueKey, completionHandler: { (result, error) -> Void in
                     
                     if let userInformation = result  {
                         self.completeLogin(userInformation)
                     }else{
-                        println(errorString)
+                        if let error = error {
+                            
+                            self.displayError(error.localizedDescription,titleError: "Login Failed")
+                        }
+                        
                     }
                     
                 })
@@ -36,27 +46,45 @@ class LoginViewController: UIViewController {
                 
                 
             } else {
-                self.displayError(errorString)
+                if let error = error {
+                    
+                    self.displayError(error.localizedDescription,titleError: "Login Failed")
+                }
             }
-
+            
             
         }
-   
+
     }
     
     func completeLogin(user:UdacityUserInformation) {
         dispatch_async(dispatch_get_main_queue(), {
-            self.debugTextLabel.text = ""
+            
             var controller = self.storyboard!.instantiateViewControllerWithIdentifier("TabBarController") as! OnTheMapTabBarController
             controller.user = user
             self.presentViewController(controller, animated: true, completion: nil)
         })
     }
     
-    func displayError(errorString: String?) {
+    func displayError(errorString: String?,titleError: String?) {
         dispatch_async(dispatch_get_main_queue(), {
             if let errorString = errorString {
-                self.debugTextLabel.text = errorString
+                
+                let alertController = UIAlertController(title: titleError, message: "\(errorString)", preferredStyle: .Alert)
+                
+                let tryAgainAction = UIAlertAction(title: "Try again?", style: .Cancel) { (action) in
+                    self.loginWithUdacityClient()
+                }
+                alertController.addAction(tryAgainAction)
+                
+                let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+                    // ...
+                }
+                alertController.addAction(OKAction)
+                
+                self.presentViewController(alertController, animated: true) {
+                    // ...
+                }
             }
         })
     }

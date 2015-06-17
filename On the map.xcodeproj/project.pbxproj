@@ -21,7 +21,6 @@
 		847B442D1B29BAB800BB5F8B /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847B442C1B29BAB800BB5F8B /* ListViewController.swift */; };
 		847B443F1B2EB0A500BB5F8B /* list.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 847B442E1B2EB0A500BB5F8B /* list.pdf */; };
 		847B44401B2EB0A500BB5F8B /* map.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 847B442F1B2EB0A500BB5F8B /* map.pdf */; };
-		847B444B1B2EB0A500BB5F8B /* pin.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 847B443A1B2EB0A500BB5F8B /* pin.pdf */; };
 		847B444C1B2EB0A500BB5F8B /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 847B443B1B2EB0A500BB5F8B /* Roboto-Medium.ttf */; };
 		847B444D1B2EB0A500BB5F8B /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 847B443C1B2EB0A500BB5F8B /* Roboto-Regular.ttf */; };
 		847B444E1B2EB0A500BB5F8B /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 847B443D1B2EB0A500BB5F8B /* Roboto-Thin.ttf */; };
@@ -31,6 +30,7 @@
 		847B445A1B2F019400BB5F8B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 847B44581B2F019400BB5F8B /* Main.storyboard */; };
 		847B445C1B302FEE00BB5F8B /* UdacityUserInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847B445B1B302FEE00BB5F8B /* UdacityUserInformation.swift */; };
 		847B445E1B3044B500BB5F8B /* OnTheMapTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847B445D1B3044B500BB5F8B /* OnTheMapTabBarController.swift */; };
+		848E913F1B319D440094A2FE /* StudentLocationsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848E913E1B319D440094A2FE /* StudentLocationsData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,7 +62,6 @@
 		847B442C1B29BAB800BB5F8B /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		847B442E1B2EB0A500BB5F8B /* list.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = list.pdf; sourceTree = "<group>"; };
 		847B442F1B2EB0A500BB5F8B /* map.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = map.pdf; sourceTree = "<group>"; };
-		847B443A1B2EB0A500BB5F8B /* pin.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = pin.pdf; sourceTree = "<group>"; };
 		847B443B1B2EB0A500BB5F8B /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		847B443C1B2EB0A500BB5F8B /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		847B443D1B2EB0A500BB5F8B /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Thin.ttf"; sourceTree = "<group>"; };
@@ -72,6 +71,7 @@
 		847B44591B2F019400BB5F8B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		847B445B1B302FEE00BB5F8B /* UdacityUserInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityUserInformation.swift; sourceTree = "<group>"; };
 		847B445D1B3044B500BB5F8B /* OnTheMapTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnTheMapTabBarController.swift; sourceTree = "<group>"; };
+		848E913E1B319D440094A2FE /* StudentLocationsData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentLocationsData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,7 +130,6 @@
 			children = (
 				847B442E1B2EB0A500BB5F8B /* list.pdf */,
 				847B442F1B2EB0A500BB5F8B /* map.pdf */,
-				847B443A1B2EB0A500BB5F8B /* pin.pdf */,
 				847B443B1B2EB0A500BB5F8B /* Roboto-Medium.ttf */,
 				847B443C1B2EB0A500BB5F8B /* Roboto-Regular.ttf */,
 				847B443D1B2EB0A500BB5F8B /* Roboto-Thin.ttf */,
@@ -202,6 +201,7 @@
 				847B44261B2874E400BB5F8B /* StudentLocationClient.swift */,
 				847B44281B2874F900BB5F8B /* StudentLocationConstants.swift */,
 				847B442A1B29966200BB5F8B /* StudentLocationConvenience.swift */,
+				848E913E1B319D440094A2FE /* StudentLocationsData.swift */,
 			);
 			name = StudentLocation;
 			sourceTree = "<group>";
@@ -291,7 +291,6 @@
 				847B443F1B2EB0A500BB5F8B /* list.pdf in Resources */,
 				847B444C1B2EB0A500BB5F8B /* Roboto-Medium.ttf in Resources */,
 				847B444D1B2EB0A500BB5F8B /* Roboto-Regular.ttf in Resources */,
-				847B444B1B2EB0A500BB5F8B /* pin.pdf in Resources */,
 				847B44531B2EB87F00BB5F8B /* Media.xcassets in Resources */,
 				845E39491B271A2500DE6D3F /* LaunchScreen.xib in Resources */,
 				847B444F1B2EB0A500BB5F8B /* udacity.pdf in Resources */,
@@ -323,6 +322,7 @@
 				845E39691B28590900DE6D3F /* MapViewController.swift in Sources */,
 				847B445C1B302FEE00BB5F8B /* UdacityUserInformation.swift in Sources */,
 				847B44291B2874F900BB5F8B /* StudentLocationConstants.swift in Sources */,
+				848E913F1B319D440094A2FE /* StudentLocationsData.swift in Sources */,
 				847B44551B2EF79400BB5F8B /* InformationPostViewController.swift in Sources */,
 				847B442D1B29BAB800BB5F8B /* ListViewController.swift in Sources */,
 				845E39651B271F4A00DE6D3F /* UdacityClient.swift in Sources */,

@@ -20,6 +20,7 @@ class UdacityClient: NSObject {
     
     func taskForPostMethod(method: String,  jsonBody: [String:AnyObject], completionHandler: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
         
+        
         //Build the URL and configure the request */
         
         let urlString = Constants.BaseURLSecure + method
@@ -36,7 +37,7 @@ class UdacityClient: NSObject {
             /* Parse the data and use the data (happens in completion handler) */
             if let error = downloadError {
                 let newError = UdacityClient.errorForData(data, response: response, error: error)
-                completionHandler(result: nil, error: downloadError)
+                completionHandler(result: nil, error: newError)
             } else {
                 //
                 let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5)) /* subset response data! */
@@ -52,6 +53,7 @@ class UdacityClient: NSObject {
     }
     
     func taskForGetMethod(method: String, completionHandler: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
+        
         
         //Build the URL and configure the request */
         
@@ -81,7 +83,7 @@ class UdacityClient: NSObject {
         return task
     }
 
-    func getUserInformation (uniqueKey: Int, completionHandler:(result: UdacityUserInformation?,errorString:String?) -> Void) {
+    func getUserInformation (uniqueKey: Int, completionHandler:(result: UdacityUserInformation?,error:NSError?) -> Void) {
         
         var method = Methods.Users
         
@@ -91,14 +93,14 @@ class UdacityClient: NSObject {
             
             if let error = error {
                 
-                completionHandler(result: nil, errorString: "Error during get user info")
+                completionHandler(result: nil, error: error)
             }else {
                 
                 if let paresedResult = result as? NSDictionary {
                     
                     let userInfo = paresedResult.valueForKey(JSONResponseKeys.User) as? NSDictionary
                     
-                   completionHandler(result: UdacityUserInformation(dictionary: userInfo as! [String : AnyObject],uniqueKey: uniqueKey), errorString: "")
+                   completionHandler(result: UdacityUserInformation(dictionary: userInfo as! [String : AnyObject],uniqueKey: uniqueKey), error: nil)
                     
                 }
             }
@@ -107,7 +109,7 @@ class UdacityClient: NSObject {
     }
     
     
-    func authenticateWithUdacityApi(login: String,password: String, completionHandler: (success: Bool, uniqueKey: Int, errorString: String?) -> Void) {
+    func authenticateWithUdacityApi(login: String,password: String, completionHandler: (success: Bool, uniqueKey: Int, error: NSError?) -> Void) {
         
         let jsonBody = [JSONBodyKeys.Udacity:
             [JSONBodyKeys.Username:login,
@@ -117,12 +119,16 @@ class UdacityClient: NSObject {
             
             if let paresedResult = result as? NSDictionary {
                 
-                if let someError = error {
-                    completionHandler(success: false, uniqueKey: 0, errorString:"Error during authentication")
+                if let error = error {
+                    
+                    completionHandler(success: false, uniqueKey: 0, error:error)
                 }else{
                     
                     if paresedResult.valueForKey(JSONResponseKeys.Error) != nil {
-                        completionHandler(success: false,uniqueKey: 0, errorString: paresedResult.valueForKey(JSONResponseKeys.Error) as? String)
+                        let stringError = paresedResult.valueForKey(JSONResponseKeys.Error) as! String
+                        let userInfo = [NSLocalizedDescriptionKey:stringError]
+                        let error = NSError(domain: "UdacityClient Error", code: 1, userInfo: userInfo)
+                        completionHandler(success: false,uniqueKey: 0, error:error)
                     } else {
                         
                         //success
@@ -130,16 +136,15 @@ class UdacityClient: NSObject {
                             
                             let key = accountInfo.valueForKey(JSONResponseKeys.Key) as! String
                             
-                            
-                            
-                            completionHandler(success: accountInfo.valueForKey(JSONResponseKeys.Registered) as! Bool,uniqueKey: key.toInt()!, errorString: "")
+                            completionHandler(success: accountInfo.valueForKey(JSONResponseKeys.Registered) as! Bool,uniqueKey: key.toInt()!, error: error)
                             
                         }
-                        
-                        
+                         
                     }
                 }
                 
+            }else{
+                completionHandler(success: false,uniqueKey: 0, error: error)
             }
             
             
@@ -184,6 +189,7 @@ class UdacityClient: NSObject {
         
         return Singleton.sharedInstance
     }
-
+    
+    
 
 }

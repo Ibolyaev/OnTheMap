@@ -12,7 +12,7 @@ import MapKit
 
 class MapViewController: UIViewController, MKMapViewDelegate  {
     
-    var studentLocations: [StudentLocation] = [StudentLocation]()
+    //var studentLocations: [StudentLocation] = [StudentLocation]()
     
     
     
@@ -59,14 +59,18 @@ class MapViewController: UIViewController, MKMapViewDelegate  {
             
             if let studentLocations = result {
                 
-                self.studentLocations = studentLocations
+                StudentLocationsData.sharedInstance.studentLocations = studentLocations
                 dispatch_async(dispatch_get_main_queue()) {
                     self.updateMapView()
                 }
                 
                 
             }else{
-                println(error)
+                
+                if let error = error {
+                    self.displayError(error.localizedDescription,titleError: "Failed to load locations")
+                }
+                
             }
             
         }
@@ -114,7 +118,7 @@ class MapViewController: UIViewController, MKMapViewDelegate  {
         
         mapView.removeAnnotations(mapView.annotations)
         
-        for el in self.studentLocations {
+        for el in StudentLocationsData.sharedInstance.studentLocations {
             addNewLocationOnMap(el)
         }
         
@@ -139,6 +143,29 @@ class MapViewController: UIViewController, MKMapViewDelegate  {
         
         mapView.addAnnotation(annotation)
 
+    }
+    
+    func displayError(errorString: String?,titleError: String?) {
+        dispatch_async(dispatch_get_main_queue(), {
+            if let errorString = errorString {
+                
+                let alertController = UIAlertController(title: titleError, message: "\(errorString)", preferredStyle: .Alert)
+                
+                //let tryAgainAction = UIAlertAction(title: "Try again?", style: .Cancel) { (action) in
+                    //self.loginWithUdacityClient()
+                //}
+                //alertController.addAction(tryAgainAction)
+                
+                let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+                    // ...
+                }
+                alertController.addAction(OKAction)
+                
+                self.presentViewController(alertController, animated: true) {
+                    // ...
+                }
+            }
+        })
     }
 
 }

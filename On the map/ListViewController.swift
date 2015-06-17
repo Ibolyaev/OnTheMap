@@ -13,30 +13,37 @@ class ListViewController: UIViewController,UITableViewDataSource,UITableViewDele
     
     @IBOutlet weak var refreshButton: UIBarButtonItem!
     
-    var studentLocations: [StudentLocation] = [StudentLocation]()
+    //var studentLocations: [StudentLocation] = [StudentLocation]()
    
     
     @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        
-        super.viewWillAppear(animated)
         refreshButton.target = self
         refreshButton.action = "refresh:"
         
         let addButton = UIBarButtonItem(image: UIImage(named: "pin"), style: UIBarButtonItemStyle.Plain, target: self, action: "addLocation:")
         
         self.navigationItem.rightBarButtonItems?.append(addButton)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        
+        super.viewWillAppear(animated)
+        
         
         loadLocations()
         
     }
     
     func addLocation(sender: UIBarButtonItem){
-        println("a")
+        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("InformationPostViewController") as! InformationPostViewController
+        let tabBarcontroller = self.tabBarController as! OnTheMapTabBarController
+        
+        controller.user = tabBarcontroller.user
+        
+        
+        self.presentViewController(controller, animated: true, completion: nil)
     }
     
     func refresh(sender: UIBarButtonItem) {
@@ -49,7 +56,7 @@ class ListViewController: UIViewController,UITableViewDataSource,UITableViewDele
             
             if let studentLocations = result {
                 
-                self.studentLocations = studentLocations
+                StudentLocationsData.sharedInstance.studentLocations = studentLocations
                 dispatch_async(dispatch_get_main_queue()) {
                     self.tableView.reloadData()
                 }
@@ -66,16 +73,17 @@ class ListViewController: UIViewController,UITableViewDataSource,UITableViewDele
     
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.studentLocations.count
+        return StudentLocationsData.sharedInstance.studentLocations.count
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = UITableViewCell()
         
-        let student = self.studentLocations[indexPath.row]
+        let student = StudentLocationsData.sharedInstance.studentLocations[indexPath.row]
         
         cell.textLabel?.text = "\(student.firstName) \(student.lastName)"
+        cell.imageView?.image = UIImage(named: "pin")
         
         return cell
         
@@ -83,7 +91,7 @@ class ListViewController: UIViewController,UITableViewDataSource,UITableViewDele
     
     func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
         
-        let student = self.studentLocations[indexPath.row]
+        let student = StudentLocationsData.sharedInstance.studentLocations[indexPath.row]
         var url = NSURL(string: student.mediaURL)
         UIApplication.sharedApplication().openURL(url!)
     }
