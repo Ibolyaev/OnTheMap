@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class ListViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
+class ListViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,OnTheMapDelegate {
     
     @IBOutlet weak var refreshButton: UIBarButtonItem!
     
@@ -22,25 +22,21 @@ class ListViewController: UIViewController,UITableViewDataSource,UITableViewDele
         refreshButton.target = self
         refreshButton.action = "refresh:"
         
-        let addButton = UIBarButtonItem(image: UIImage(named: "pin"), style: UIBarButtonItemStyle.Plain, target: self, action: "addLocation:")
-        
-        self.navigationItem.rightBarButtonItems?.append(addButton)
+        OnTheMapTabBarController.addNavigationBarButtons(self)
     }
     
     override func viewWillAppear(animated: Bool) {
         
         super.viewWillAppear(animated)
-        
-        
         loadLocations()
         
     }
     
-    func addLocation(sender: UIBarButtonItem){
-        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("InformationPostViewController") as! InformationPostViewController
+    func addLocation(sender: UIBarButtonItem) {
+        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("InformationPostViewNavController") as! UINavigationController
         let tabBarcontroller = self.tabBarController as! OnTheMapTabBarController
         
-        controller.user = tabBarcontroller.user
+        //controller.user = tabBarcontroller.user
         
         
         self.presentViewController(controller, animated: true, completion: nil)
@@ -49,6 +45,37 @@ class ListViewController: UIViewController,UITableViewDataSource,UITableViewDele
     func refresh(sender: UIBarButtonItem) {
         loadLocations()
     }
+    
+    func logOut(sender: UIBarButtonItem) {
+        
+        UdacityClient.sharedInstance().logOutWithUdacityApi { (success, error) -> Void in
+            
+            if success {
+                
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.openLoginView()
+                }
+
+                
+            }else{
+                if let error = error {
+                    self.displayError(error.localizedDescription,titleError: "Failed to logout")
+                    
+                }
+            }
+             
+        }
+    }
+    
+    func openLoginView() {
+        
+        let tabBarcontroller = self.tabBarController as! OnTheMapTabBarController
+        
+        var controller = self.storyboard!.instantiateViewControllerWithIdentifier("LoginViewController") as! UIViewController
+        
+        self.presentViewController(controller, animated: true, completion: nil)
+    }
+
 
     func loadLocations() {
         
@@ -64,12 +91,15 @@ class ListViewController: UIViewController,UITableViewDataSource,UITableViewDele
                 
             }else{
                 
-                println(error)
+                if let error = error {
+                    self.displayError(error.localizedDescription,titleError: "Failed to load locations")
+                }
             }
             
         }
 
     }
+    
     
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -96,6 +126,25 @@ class ListViewController: UIViewController,UITableViewDataSource,UITableViewDele
         UIApplication.sharedApplication().openURL(url!)
     }
     
+    func displayError(errorString: String?,titleError: String?) {
+        dispatch_async(dispatch_get_main_queue(), {
+            if let errorString = errorString {
+                
+                let alertController = UIAlertController(title: titleError, message: "\(errorString)", preferredStyle: .Alert)
+                
+                
+                let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+                    // ...
+                }
+                alertController.addAction(OKAction)
+                
+                self.presentViewController(alertController, animated: true) {
+                    // ...
+                }
+            }
+        })
+    }
+
     
     
     

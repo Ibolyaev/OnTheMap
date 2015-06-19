@@ -11,6 +11,18 @@ import UIKit
 
 class OnTheMapTabBarController: UITabBarController {
     
-    var user:UdacityUserInformation?
+    
+    
+    class func addNavigationBarButtons(viewController: UIViewController){
+        
+        //viewController.navigationItem.leftItemsSupplementBackButton = true
+        
+        let addButton = UIBarButtonItem(image: UIImage(named: "pin"), style: UIBarButtonItemStyle.Plain, target: viewController, action: "addLocation:")
+        
+        let logoutButton = UIBarButtonItem(title: "Logout", style: UIBarButtonItemStyle.Plain, target: viewController, action: "logOut:")
+        
+        viewController.navigationItem.rightBarButtonItems?.append(addButton)
+        viewController.navigationItem.setLeftBarButtonItem(logoutButton, animated: false)
+    }
     
 }

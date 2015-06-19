@@ -10,24 +10,20 @@ import Foundation
 import UIKit
 import MapKit
 
-class MapViewController: UIViewController, MKMapViewDelegate  {
-    
-    //var studentLocations: [StudentLocation] = [StudentLocation]()
-    
-    
+class MapViewController: UIViewController, MKMapViewDelegate,OnTheMapDelegate  {
     
     @IBOutlet weak var refreshButton: UIBarButtonItem!
     @IBOutlet weak var mapView: MKMapView!
     
+    
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
         refreshButton.target = self
         refreshButton.action = "refresh:"
         
-        let addButton = UIBarButtonItem(image: UIImage(named: "pin"), style: UIBarButtonItemStyle.Plain, target: self, action: "addLocation:")
-        
-        self.navigationItem.rightBarButtonItems?.append(addButton)
+        OnTheMapTabBarController.addNavigationBarButtons(self)
         
         loadLocations()
    
@@ -44,13 +40,11 @@ class MapViewController: UIViewController, MKMapViewDelegate  {
     }
     
     func addLocation(sender: UIBarButtonItem){
-        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("InformationPostViewController") as! InformationPostViewController
-        let tabBarcontroller = self.tabBarController as! OnTheMapTabBarController
         
-        controller.user = tabBarcontroller.user    
-        
+        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("InformationPostViewNavController") as! UINavigationController
         
         self.presentViewController(controller, animated: true, completion: nil)
+        
     }
     
     func loadLocations() {
@@ -63,8 +57,7 @@ class MapViewController: UIViewController, MKMapViewDelegate  {
                 dispatch_async(dispatch_get_main_queue()) {
                     self.updateMapView()
                 }
-                
-                
+  
             }else{
                 
                 if let error = error {
@@ -75,6 +68,34 @@ class MapViewController: UIViewController, MKMapViewDelegate  {
             
         }
  
+    }
+    
+    func logOut(sender: UIBarButtonItem) {
+        
+        UdacityClient.sharedInstance().logOutWithUdacityApi { (success, error) -> Void in
+            
+            if success {
+                
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.openLoginView()
+                }
+                
+            }else{
+                if let error = error {
+                    self.displayError(error.localizedDescription,titleError: "Failed to logout")
+                    
+                }
+            }
+         }
+    }
+    
+    func openLoginView() {
+        
+        let tabBarcontroller = self.tabBarController as! OnTheMapTabBarController
+        
+        var controller = self.storyboard!.instantiateViewControllerWithIdentifier("LoginViewController") as! UIViewController
+        
+        self.presentViewController(controller, animated: true, completion: nil)
     }
     
     // When user taps on the disclosure button perform a segue to Safari app
