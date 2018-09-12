@@ -1,2 +1,1 @@
-# Udacity
-# OnTheMap
+# Udacity OnTheMap
